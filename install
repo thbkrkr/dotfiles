@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# @deps : apt-get git
+
+get() {
+  if [ $(dpkg -l | grep -c "ii  $1 ") != "1" ] ; then
+     sudo apt-get install -y --force-yes $1
+  fi
+}
+
+cd ~/.dotfiles
+
+# install zsh
+if [ $(which zshz > /dev/null; echo $?) -ne 0 ]; then
+    get zsh
+    sudo chsh -s `which zsh` `whoami`
+fi
+
+if [ ! -d ~/.oh-my-zsh ]; then
+  git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+fi
+
+cp -f pure-thb.zsh-theme ~/.oh-my-zsh/themes/
+
+gitUserName=$(git config --global user.name)
+gitUserEmail=$(git config --global user.email)
+
+find . -maxdepth 1 -type f -name ".*" -exec cp {} ~ \;
+
+git config --global user.name $gitUserName
+git config --global user.email $gitUserEmail
+
+get tmux
+get vim
+get iftop
+get htop
+get unzip
+get tree
+get dos2unix
+
+[ "x$gitUserName" = "x" ] && echo "Please update your git user.name, user.email : vi ~/.gitconfig"

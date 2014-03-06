@@ -1,10 +1,10 @@
 #!/bin/sh
 
-# wget -O- https://raw.github.com/thbkrkr/myconfig/master/bim | sh
-# wget -O- http://goo.gl/h4TqX | sh
+# curl -sL https://raw.github.com/thbkrkr/dotfiles/master/bim | sh
+# curl -sL http://goo.gl/jzfMdY | sh
 
 sudo /usr/bin/apt-get install -y git
 
-git clone https://github.com/thbkrkr/myconfig.git ~/.myconfig
+git clone https://github.com/thbkrkr/dotfiles.git ~/.dotfiles
 
-~/.myconfig/install
+~/.dotfiles/install

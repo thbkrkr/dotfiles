@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# wget -O- https://raw.github.com/thbkrkr/myconfig/master/bim | sh
+# wget -O- http://goo.gl/h4TqX | sh
+
+sudo /usr/bin/apt-get install -y git
+
+git clone https://github.com/thbkrkr/myconfig.git ~/.myconfig
+
+~/.myconfig/install

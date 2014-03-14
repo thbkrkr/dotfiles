@@ -19,3 +19,7 @@
   cdf = clean -df
 [push]
   default = upstream
+[branch]
+	autosetuprebase = always
+[rebase]
+	autostash = true

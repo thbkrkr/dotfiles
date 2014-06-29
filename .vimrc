@@ -1,7 +1,16 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
+syntax on
+set hidden
+set history=1000
+set title
+
 let mapleader = ","
+
+"=== Shortcuts
+set pastetoggle=<F3>
+cmap w!! w !sudo tee % >/dev/null
 
 " set rtp+=~/.vim/bundle/vundle/
 " call vundle#rc()
@@ -38,6 +47,9 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
+set smarttab " Smarter tab levels
+set autoindent
+set cindent
 set list listchars=tab:\ \ ,trail:·
 
 " Searching

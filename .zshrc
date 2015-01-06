@@ -15,12 +15,12 @@ export PATH=~/bin:/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/s
 
 # Aliases
 
-alias get='sudo apt-get install'
+alias get='sudo apt-get install -y'
 alias search='sudo apt-cache search'
 
 alias h='history'
 alias c='clear'
-alias z='sudo shutdown 0'
+alias g='git'
 
 alias gs='git status'
 alias gst='git status'

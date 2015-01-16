@@ -20,8 +20,10 @@ alias search='sudo apt-cache search'
 
 alias h='history'
 alias c='clear'
+alias d='docker'
 alias g='git'
 
+# Git aliases
 alias gs='git status'
 alias gst='git status'
 alias gpr='git pull --rebase'
@@ -34,18 +36,25 @@ git_rebase_interactif_f() {
 alias gri=git_rebase_interactif_f
 alias gspp='git stash && git pull --rebase && git stash pop'
 
+# Docker aliases
+db() { docker build -t="$1" .; }
+drm() { docker rm $(docker ps -q -a); }
+dri() { docker rmi $(docker images -q); }
+alias dkd="docker run -d -P"
+alias dki="docker run -t -i -P"
+
+# always $cmd $sleepDuration
 always_f() {
-	"while [ 1 ]; do "$1"; sleep $2; done"
+	"while true; do "$1"; sleep $2; done"
 }
 alias always=always_f
 
-# 1 path
-# 2 extension
-# 3 motif
+# grepcode $path $fileExtension $grepRegexp
 grepcode_f() {
 	echo 'find '$1' -name "*.'$2'" | xargs grep -Hn '$3
 	find $1 -name "*.$2" | xargs grep -Hn $3
 }
 alias grepcode=grepcode_f
 
+# Source optional ~/.myzshrc
 [ -f ~/.myzshrc ] && source ~/.myzshrc

@@ -1,24 +1,33 @@
+#
+# ZSH configuration propulsed by https://github.com/robbyrussell/oh-my-zsh
+# and https://github.com/thbkrkr/dotfiles
+#
+
 ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="pure-thb"
 
 #CASE_SENSITIVE="true"
 #DISABLE_AUTO_UPDATE="true"
 COMPLETION_WAITING_DOTS="true"
+DISABLE_UPDATE_PROMPT="true"
 
-plugins=(git heroku history-substring-search)
+plugins=(git docker git history-substring-search)
 source $ZSH/oh-my-zsh.sh
 
-export PATH=~/bin:/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH=~/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-# Aliases
+##########################
 
-alias h='history'
+# Tiny aliases
 alias c='clear'
-alias m='make'
 alias d='docker'
 alias g='git'
+alias h='history'
+alias m='make'
+alias s='ssh'
+alias wholisten='netstat -antulp | grep LISTE'
 
-# Apt
+# Apt aliases
 alias get='sudo apt-get install -y'
 alias search='sudo apt-cache search'
 
@@ -41,18 +50,21 @@ dip() { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
 alias dkd="docker run -d -P"
 alias dki="docker run -t -i -P"
 
+# Functions aliases
+
 # always $cmd $sleepDuration
-always_f() {
-	"while true; do "$1"; sleep $2; done"
-}
-alias always=always_f
+always() { while true; do "$($1)"; sleep $2; done; }
 
 # grepcode $path $fileExtension $grepRegexp
-grepcode_f() {
-	echo 'find '$1' -name "*.'$2'" | xargs grep -Hn '$3
-	find $1 -name "*.$2" | xargs grep -Hn $3
-}
-alias grepcode=grepcode_f
+grepcode() { find $1 -name "*.$2" | xargs grep -Hn $3; }
+
+# curl with response code and total time
+cuurl() { curl $@ -w "\n@status=%{response_code}\n@time=%{time_total}\n"; }
+
+# curl and format response with JQ
+jc() { curl -s "$1" | jq .; }
+
+##########################
 
 # Source optional ~/.myzshrc
 [ -f ~/.myzshrc ] && source ~/.myzshrc

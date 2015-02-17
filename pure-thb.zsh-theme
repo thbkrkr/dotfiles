@@ -140,7 +140,10 @@ prompt_pure_setup() {
 	zstyle ':vcs_info:git*' actionformats ' %b|%a'
 
 	# show username@host if logged in through SSH
-	[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%n@%m '
+	#[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%n@%m '
+
+	# or show it always
+	prompt_pure_username='%n@%m'
 
 	# prompt turns red if the previous command didn't exit with 0
 	PROMPT='%(?.%F{magenta}.%F{red})>%f '

@@ -64,6 +64,8 @@ cuurl() { curl $@ -w "\n@status=%{response_code}\n@time=%{time_total}\n"; }
 # curl and format response with JQ
 jc() { curl -s "$1" | jq .; }
 
+geoip() { curl -s www.telize.com/geoip | jq .; }
+
 ##########################
 
 # Source optional ~/.myzshrc

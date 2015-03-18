@@ -25,11 +25,8 @@ alias g='git'
 alias h='history'
 alias m='make'
 alias s='ssh'
-alias wholisten='netstat -antulp | grep LISTE'
-
-# Apt aliases
-alias get='sudo apt-get install -y'
-alias search='sudo apt-cache search'
+alias dm='docker-machine'
+alias cr='crane'
 
 # Git aliases
 alias gs='git status'
@@ -50,7 +47,13 @@ dip() { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
 alias dkd="docker run -d -P"
 alias dki="docker run -t -i -P"
 
-# Functions aliases
+# Others aliases
+
+# Apt
+alias get='sudo apt-get install -y'
+alias search='sudo apt-cache search'
+
+alias wholisten='netstat -antulp | grep LISTE'
 
 # always $cmd $sleepDuration
 always() { while true; do "$($1)"; sleep $2; done; }

@@ -44,6 +44,7 @@ drm() { docker rm $(docker ps -q -a); }
 dri() { docker rmi $(docker images -q --filter "dangling=true"); }
 dgo() { docker exec -ti $@ bash }
 dip() { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
+dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
 alias dkd="docker run -d -P"
 alias dki="docker run -t -i -P"
 

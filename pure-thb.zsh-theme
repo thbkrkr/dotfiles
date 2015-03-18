@@ -18,8 +18,8 @@
 # %m => shortname host
 # %(?..) => prompt conditional - %(condition.true.false)
 
-LANG="en_US git"
-LC_ALL="en_US git"
+#LANG="en_US git"
+#LC_ALL="en_US git"
 
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s

@@ -1,0 +1,12 @@
+#!/bin/bash -eu
+
+DOCKER_MACHINE_VERSION=0.1.0
+CRANE_VERSION=1.0.0
+
+echo "Install docker-machine v$DOCKER_MACHINE_VERSION..."
+sudo wget https://github.com/docker/machine/releases/download/v${DOCKER_MACHINE_VERSION}/docker-machine_linux-amd64 -O /usr/bin/docker-machine \
+    && sudo chmod 755 /usr/bin/docker-machine
+    
+echo "Install crane v$CRANE_VERSION..."
+sudo wget https://github.com/michaelsauter/crane/releases/download/v${CRANE_VERSION}/crane_linux_amd64 -O /usr/bin/crane \
+    && sudo chmod 755 /usr/bin/crane

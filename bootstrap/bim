@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+# curl -sSL https://raw.github.com/thbkrkr/dotfiles/master/bim | sh
+# curl -sSL http://goo.gl/jzfMdY | sh
+
+[ command -v "git" > /dev/null 2>&1 ] \
+    || sudo /usr/bin/apt-get install -y git
+
+[ ! -d ~/.dotfiles ] \
+    && git clone https://github.com/thbkrkr/dotfiles.git ~/.dotfiles \
+    || cd ~/.dotfiles && git pull --rebase
+
+~/.dotfiles/install.sh

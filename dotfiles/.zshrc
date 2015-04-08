@@ -14,6 +14,8 @@ DISABLE_UPDATE_PROMPT="true"
 plugins=(git docker git history-substring-search)
 source $ZSH/oh-my-zsh.sh
 
+export HISTSIZE=20000
+
 export PATH=~/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ##########################
@@ -35,8 +37,10 @@ alias gpr='git pull --rebase'
 alias grrh='git reset --hard HEAD'
 alias gcdf='git clean -df'
 alias gcam='git commit --amend'
+alias gcamne='git commit --amend --no-edit'
 alias gspp='git stash && git pull --rebase && git stash pop'
 gri() { git rebase -i HEAD~$1; }
+alias glg='git lg --stat -C -4'
 
 # Docker aliases
 db() { docker build -t="$1" .; }
@@ -45,10 +49,14 @@ dri() { docker rmi $(docker images -q --filter "dangling=true"); }
 dgo() { docker exec -ti $@ bash }
 dip() { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
+dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
 alias dkd="docker run -d -P"
 alias dki="docker run -t -i -P"
+alias dclean='~/bin/docker-cleanup.sh'
+dim() { docker images | grep $@; }
 
 # Others aliases
+alias tmux='tmux -2'
 
 # Apt
 alias get='sudo apt-get install -y'

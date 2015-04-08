@@ -1,0 +1,14 @@
+#!/bin/bash -eu
+
+# Set locales
+sudo locale-gen en_US.UTF-8
+
+# Install dotfiles
+curl -sSL https://raw.github.com/thbkrkr/dotfiles/master/bim | sh
+
+# Install base packages
+./.dotfiles/install/install-base.sh
+
+# Install Docker
+curl -sSL https://get.docker.com/ | sh
+sudo usermod -aG docker $(whoami)

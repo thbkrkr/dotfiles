@@ -4,7 +4,7 @@
 # curl -sSL http://goo.gl/jzfMdY | sh
 
 [ command -v "git" > /dev/null 2>&1 ] \
-    || sudo /usr/bin/apt-get install -y git
+    && sudo /usr/bin/apt-get install -y git
 
 [ ! -d ~/.dotfiles ] \
     && git clone https://github.com/thbkrkr/dotfiles.git ~/.dotfiles \

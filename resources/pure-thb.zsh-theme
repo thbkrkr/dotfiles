@@ -18,8 +18,8 @@
 # %m => shortname host
 # %(?..) => prompt conditional - %(condition.true.false)
 
-#LANG="en_US git"
-#LC_ALL="en_US git"
+LANG="en_US git"
+LC_ALL="en_US git"
 
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s
@@ -143,7 +143,9 @@ prompt_pure_setup() {
 	#[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%n@%m '
 
 	# or show it always
-	prompt_pure_username='%n@%m'
+	local is_docker=""
+	[ -f /.dockerinit ] && is_docker=" %F{yellow}[docker]%f"
+	prompt_pure_username="%n@%m$is_docker"
 
 	# prompt turns red if the previous command didn't exit with 0
 	PROMPT='%(?.%F{magenta}.%F{red})>%f '

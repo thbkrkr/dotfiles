@@ -12,7 +12,7 @@ is_up2date() {
 if ! is_up2date
 then
     echo "Install crane v$CRANE_VERSION..."
-    sudo wget ${CRANE_URL} -O /usr/bin/cranee \
+    sudo wget ${CRANE_URL} -O /usr/bin/crane \
         && sudo chmod 755 /usr/bin/crane
 else
     echo "crane v$CRANE_VERSION is up-to-date"

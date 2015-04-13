@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/sh -eu
 #
-# Install tools packages
+# Install tools
+
 sudo apt-get install -y \
     tmux \
     vim \

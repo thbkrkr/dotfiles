@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Bootstrap installation
+#
+# curl -sSL https://raw.github.com/thbkrkr/dotfiles/master/bim | sh
+# curl -sSL http://goo.gl/jzfMdY | sh
+
+# Install git if not present
+[ $(which git > /dev/null 2>&1; echo $?) -ne 0 ] \
+    && sudo /usr/bin/apt-get install -y git \
+    || echo "Git is installed..."
+
+# Clone or update dotfiles git repo
+if [ ! -d ~/.dotfiles ]; then
+    git clone https://github.com/thbkrkr/dotfiles.git ~/.dotfiles
+else
+    cd ~/.dotfiles && git pull --rebase
+fi
+
+# Base install
+~/.dotfiles/install.sh

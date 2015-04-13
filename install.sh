@@ -1,8 +1,10 @@
 #!/bin/sh
-
+#
+# Install and configure Zsh, oh-my-zsh and dotfiles.
+#
 # @deps : apt-get, git
 
-# Install zsh
+# Install Zsh
 [ -f ~/.zshrc ] && cp ~/.zshrc ~/.zshrc.save.$(date +%s)
 if [ $(which zsh > /dev/null; echo $?) -eq 1 ]
 then

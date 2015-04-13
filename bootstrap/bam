@@ -1,13 +1,20 @@
-#!/bin/bash -eu
+#!/bin/sh -eu
+#
+# Bootstrap full installation
+#
+# curl -sSL https://raw.github.com/thbkrkr/dotfiles/master/bootstrap/bam | sh -s "tools;docker;crane;docker-machine"
 
 # Set locales
-sudo locale-gen en_US.UTF-8
+sudo locale-gen en_US en_US.UTF-8
+sudo dpkg-reconfigure locales
 
 # Install dotfiles
 curl -sSL https://raw.github.com/thbkrkr/dotfiles/master/bim | sh
 
-# Install base packages
-./.dotfiles/install/install-base.sh
-
-# Install Docker
-./.dotfiles/install/install-docker.sh
+export IFS=";"
+for module in $1
+do
+    [ -f ~/.dotfiles/install/install-$module.sh ] \
+        && ~/.dotfiles/install/install-$module.sh && echo " --> Module $module OK" \
+        || echo " --> Module $module unknown"
+done

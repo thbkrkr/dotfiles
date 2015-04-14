@@ -20,6 +20,7 @@ then
 else
     cd ~/.oh-my-zsh
     git pull --rebase
+    cd
 fi
 
 cp -f ~/.dotfiles/resources/pure-thb.zsh-theme ~/.oh-my-zsh/themes/
@@ -29,7 +30,10 @@ gitUserName=$(git config --global user.name)
 gitUserEmail=$(git config --global user.email)
 
 # Copy all dotfiles
-cp ~/.dotfiles/dotfiles/.[a-z]* ~/
+cp -f ~/.dotfiles/dotfiles/.[a-z]* ~/
+
+# Copy all utils scripts
+cp -f ~/.dotfiles/bin/* ~/bin
 
 # Restore git user info
 git config --global user.name $gitUserName

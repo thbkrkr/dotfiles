@@ -33,14 +33,12 @@
   cb = checkout -b
   br = branch
   cp = cherry-pick
-  tree = log --graph --oneline --all --decorate    
+  tree = log --graph --oneline --all --decorate
   ri = rebase -i
   rim = rebase -i master
   re = rebase
   ru = rebase upstream/master
   fu = fetch upstream
-[push]
-  default = simple
 [branch]
 	autosetuprebase = always
 [rebase]

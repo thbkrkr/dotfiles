@@ -78,6 +78,13 @@ cuurl() { curl $@ -w "\n@status=%{response_code}\n@time=%{time_total}\n"; }
 # curl and format response with JQ
 jc() { curl -s "$1" | jq .; }
 
+# curl localhost
+cl() { curl -s localhost:$@; }
+jcl() { curl -s localhost:$@ | jq .; }
+
+# update dotfiles
+updot() { cd ~/.dotfiles; git pull --rebase; ./install.sh; }
+
 # Display the IP and geo information of the current machine
 geoip() { curl -s www.telize.com/geoip | jq .; }
 
@@ -87,6 +94,7 @@ update_repo() {
   sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/$1.list" \
     -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
 }
+
 
 ##########################
 

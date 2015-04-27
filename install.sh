@@ -33,7 +33,7 @@ gitUserEmail=$(git config --global user.email)
 cp -f ~/.dotfiles/dotfiles/.[a-z]* ~/
 
 # Copy all utils scripts
-cp -f ~/.dotfiles/bin/* ~/bin
+mkdir -p ~/bin && cp -f ~/.dotfiles/bin/* ~/bin
 
 # Restore git user info
 git config --global user.name $gitUserName

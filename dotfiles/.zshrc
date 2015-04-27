@@ -62,12 +62,13 @@ alias tmux='tmux -2'
 alias get='sudo apt-get install -y'
 alias search='sudo apt-cache search'
 
-alias wholisten='netstat -antulp | grep LISTE'
+# Display listened ports
+alias wholisten='sudo netstat -antulp | grep LISTE'
 
-# always $cmd $sleepDuration
-always() { while true; do "$($1)"; sleep $2; done; }
+# @help always $cmd $sleepDuration
+always() { while true; do "$1"; sleep $2; done; }
 
-# grepcode $path $fileExtension $grepRegexp
+# @help grepcode $path $fileExtension $grepRegexp
 grepcode() { find $1 -name "*.$2" | xargs grep -Hn $3; }
 
 # curl with response code and total time
@@ -76,9 +77,18 @@ cuurl() { curl $@ -w "\n@status=%{response_code}\n@time=%{time_total}\n"; }
 # curl and format response with JQ
 jc() { curl -s "$1" | jq .; }
 
+# Display the IP and geo information of the current machine
 geoip() { curl -s www.telize.com/geoip | jq .; }
+
+# update a specific apt repo
+# @help update_repo docker
+update_repo() {
+  sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/$1.list" \
+    -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
+}
 
 ##########################
 
 # Source optional ~/.myzshrc
 [ -f ~/.myzshrc ] && source ~/.myzshrc
+

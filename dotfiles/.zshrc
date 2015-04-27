@@ -23,11 +23,12 @@ export PATH=~/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # Tiny aliases
 alias c='clear'
 alias d='docker'
+alias dm='docker-machine'
+alias dc='docker-compose'
 alias g='git'
 alias h='history'
 alias m='make'
 alias s='ssh'
-alias dm='docker-machine'
 alias cr='crane'
 
 # Git aliases

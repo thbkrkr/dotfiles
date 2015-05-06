@@ -95,6 +95,9 @@ update_repo() {
     -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
 }
 
+create_push_repo() {
+  curl -s https://gist.githubusercontent.com/thbkrkr/d37ea4a4f912286ceb9b/raw/cce043b32a14b023868928a728aecf1f7c820b7b/prepare-pushgitrepo.sh | sh -s $1
+}
 
 ##########################
 

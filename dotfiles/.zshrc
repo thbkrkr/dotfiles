@@ -99,8 +99,15 @@ create_push_repo() {
   curl -s https://gist.githubusercontent.com/thbkrkr/d37ea4a4f912286ceb9b/raw/cce043b32a14b023868928a728aecf1f7c820b7b/prepare-pushgitrepo.sh | sh -s $1
 }
 
+devbox() {
+  d run -ti \
+    -v $(pwd):/\> \
+    -v /usr/bin/docker:/usr/bin/docker:ro \
+    -v /var/run/docker.sock:/var/run/docker.sock:ro \
+    krkr/devbox
+}
+
 ##########################
 
 # Source optional ~/.myzshrc
 [ -f ~/.myzshrc ] && source ~/.myzshrc
-

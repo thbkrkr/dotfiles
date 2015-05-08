@@ -2,7 +2,7 @@
 #
 # Bootstrap full installation
 #
-# curl -sSL https://raw.github.com/thbkrkr/dotfiles/master/bootstrap/bam | sh -s "tools;docker;crane;docker-machine"
+# curl -sSL https://git.io/biiim | sh -s "tools;docker;crane;docker-machine"
 
 # Set locales
 sudo locale-gen en_US en_US.UTF-8

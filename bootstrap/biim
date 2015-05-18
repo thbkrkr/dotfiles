@@ -2,6 +2,7 @@
 #
 # Bootstrap full installation
 #
+# curl -sSL https://raw.github.com/thbkrkr/dotfiles/master/bootstrap/bim | sh -s "tools;docker;crane;docker-machine"
 # curl -sSL https://git.io/biiim | sh -s "tools;docker;crane;docker-machine"
 
 # Set locales
@@ -9,8 +10,9 @@ sudo locale-gen en_US en_US.UTF-8
 sudo dpkg-reconfigure locales
 
 # Install dotfiles
-curl -sSL https://raw.github.com/thbkrkr/dotfiles/master/bim | sh
+curl -sSL https://raw.github.com/thbkrkr/dotfiles/master/bootstrap/bim | sh
 
+# Install modules
 export IFS=";"
 for module in $1
 do

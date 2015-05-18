@@ -101,7 +101,7 @@ create_push_repo() {
 
 devbox() {
   d run -ti \
-    -v $(pwd):/\> \
+    -v $(pwd):/work \
     -v /usr/bin/docker:/usr/bin/docker:ro \
     -v /var/run/docker.sock:/var/run/docker.sock:ro \
     krkr/devbox

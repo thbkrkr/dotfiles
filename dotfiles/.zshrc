@@ -23,8 +23,8 @@ export PATH=~/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # Tiny aliases
 alias c='clear'
 alias d='docker'
-alias dm='docker-machine'
 alias dc='docker-compose'
+alias dm='docker-machine'
 alias g='git'
 alias h='history'
 alias m='make'
@@ -99,12 +99,47 @@ create_push_repo() {
   curl -s https://gist.githubusercontent.com/thbkrkr/d37ea4a4f912286ceb9b/raw/cce043b32a14b023868928a728aecf1f7c820b7b/prepare-pushgitrepo.sh | sh -s $1
 }
 
-devbox() {
-  d run -ti \
+--docker-socket() {
+  echo "-v /var/run/docker.sock:/var/run/docker.sock"
+}
+
+--docker() {
+  echo "-v /usr/bin/docker:/usr/bin/docker"
+}
+
+dev() {
+  docker run -ti \
+    $(--docker-socket) $(--docker) \
     -v $(pwd):/work \
-    -v /usr/bin/docker:/usr/bin/docker:ro \
-    -v /var/run/docker.sock:/var/run/docker.sock:ro \
     krkr/devbox
+}
+
+build() {
+  docker run -ti \
+    $(--docker-socket) $(--docker) \
+    -e REPO=$REPO \
+    -v $(pwd):/src \
+    krkr/builder build $@
+}
+
+push() {
+  declare name=$1
+  declare repo=$2
+  docker tag -f $name $repo/$name
+  docker push $repo/$name
+}
+
+play() {
+  docker run -ti \
+    -v $(pwd):/ops \
+    krkr/devopsbox $@
+}
+
+compose() {
+  docker run -ti \
+    $(--docker-socket) \
+    -v $(pwd):/compose \
+    krkr/dc $@
 }
 
 ##########################

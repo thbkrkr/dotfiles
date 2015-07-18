@@ -11,7 +11,7 @@ ZSH_THEME="pure-thb"
 COMPLETION_WAITING_DOTS="true"
 DISABLE_UPDATE_PROMPT="true"
 
-plugins=(git docker git history-substring-search)
+plugins=(git docker docker-compose git history-substring-search)
 source $ZSH/oh-my-zsh.sh
 
 export HISTSIZE=20000
@@ -44,15 +44,16 @@ gri() { git rebase -i HEAD~$1; }
 alias glg='git lg --stat -C -4'
 
 # Docker aliases
-db() { docker build -t="$1" .; }
+db() { docker build --rm -t="$1" .; }
 drm() { docker rm $(docker ps -q -a); }
 dri() { docker rmi $(docker images -q --filter "dangling=true"); }
-dgo() { docker exec -ti $@ bash }
+dgo() { docker exec -ti $@ sh }
+dgob() { docker exec -ti $@ bash }
 dip() { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
 dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
 alias dkd="docker run -d -P"
-alias dki="docker run -t -i -P"
+alias dki="docker run --rm -P -ti"
 alias dclean='~/bin/docker-cleanup.sh'
 dim() { docker images | grep $@; }
 
@@ -119,7 +120,7 @@ build() {
     $(--docker-socket) $(--docker) \
     -e REPO=$REPO \
     -v $(pwd):/src \
-    krkr/builder build $@
+    krkr/docker-builder build $@
 }
 
 push() {

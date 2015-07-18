@@ -143,6 +143,12 @@ compose() {
     krkr/dc $@
 }
 
+dcurl() {
+  docker run -ti \
+    krkr/curl \
+    curl -sSL --connect-timeout 3 $@ -o /dev/null -w '{"status":"%{http_code}","time":"%{time_total}"}\n'
+}
+
 ##########################
 
 # Source optional ~/.myzshrc

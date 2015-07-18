@@ -149,6 +149,11 @@ dcurl() {
     curl -sSL --connect-timeout 3 $@ -o /dev/null -w '{"status":"%{http_code}","time":"%{time_total}"}\n'
 }
 
+randpwd() {
+  local length=${1:-42}
+  cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $length | head -1
+}
+
 ##########################
 
 # Source optional ~/.myzshrc

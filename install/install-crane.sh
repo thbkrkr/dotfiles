@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 #
-# Install crane (https://github.com/michaelsauter/crane)
+# Install Crane (https://github.com/michaelsauter/crane)
 
 CRANE_VERSION=1.0.0
 CRANE_URL=https://github.com/michaelsauter/crane/releases/download/v${CRANE_VERSION}/crane_linux_amd64
@@ -12,8 +12,8 @@ is_up2date() {
 if ! is_up2date
 then
     echo "Install crane v$CRANE_VERSION..."
-    sudo wget ${CRANE_URL} -O /usr/bin/crane \
-        && sudo chmod 755 /usr/bin/crane
+    sudo wget ${CRANE_URL} -O /usr/bin/local/crane \
+        && sudo chmod 755 /usr/bin/local/crane
 else
     echo "crane v$CRANE_VERSION is up-to-date"
 fi

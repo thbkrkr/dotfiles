@@ -16,11 +16,9 @@ if ! is_installed
 then
   echo "Install Docker..."
   curl -sSL https://get.docker.com/ | sh
-  
   join_group
 else
   join_group # in case
-  
   echo "Docker is installed..."
   docker version
 fi

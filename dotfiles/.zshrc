@@ -109,14 +109,14 @@ create_push_repo() {
 }
 
 dev() {
-  docker run -ti \
+  docker run --rm -ti \
     $(--docker-socket) $(--docker) \
     -v $(pwd):/work \
     krkr/devbox
 }
 
 build() {
-  docker run -ti \
+  docker run --rm -ti \
     $(--docker-socket) $(--docker) \
     -e REPO=$REPO \
     -v $(pwd):/src \
@@ -131,20 +131,20 @@ push() {
 }
 
 play() {
-  docker run -ti \
+  docker run --rm -ti \
     -v $(pwd):/ops \
     krkr/devopsbox $@
 }
 
 compose() {
-  docker run -ti \
+  docker run --rm -ti \
     $(--docker-socket) \
     -v $(pwd):/compose \
     krkr/dc $@
 }
 
 dcurl() {
-  docker run -ti \
+  docker run --rm -ti \
     krkr/curl \
     curl -sSL --connect-timeout 3 $@ -o /dev/null -w '{"status":"%{http_code}","time":"%{time_total}"}\n'
 }

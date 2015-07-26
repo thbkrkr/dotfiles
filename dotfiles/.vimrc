@@ -1,10 +1,11 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-syntax on
+"syntax on
 set hidden
 set history=1000
 set title
+"set foldmethod=syntax
 
 let mapleader = ","
 
@@ -12,31 +13,20 @@ let mapleader = ","
 set pastetoggle=<F3>
 cmap w!! w !sudo tee % >/dev/null
 
-" set rtp+=~/.vim/bundle/vundle/
-" call vundle#rc()
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+" call vundle#begin()
+call vundle#rc()
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
 
-" Bundle 'tpope/vim-fugitive'
-" Bundle 'tpope/vim-git'
-" Bundle 'pangloss/vim-javascript'
-" Bundle 'scrooloose/nerdtree'
-" Bundle 'tpope/vim-surround'
-" Bundle 'vim-scripts/taglist.vim'
-" Bundle 'tpope/vim-markdown'
-" Bundle 'godlygeek/tabular'
-" Bundle 'tpope/vim-unimpaired'
-" Bundle 'vim-scripts/searchfold.vim'
-" Bundle 'tpope/vim-endwise'
-" Bundle 'kchmck/vim-coffee-script'
-" Bundle 'scrooloose/syntastic'
-" Bundle 'mattn/gist-vim'
-" Bundle 'kien/ctrlp.vim'
-" Bundle 'juvenn/mustache.vim'
-" Bundle 'bbommarito/vim-slim'
-" Bundle 'tpope/vim-commentary'
-" Bundle 'mattn/webapi-vim'
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'fatih/vim-go'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
 
 set number
-syntax on
 set autoread " Automatically reload changes if detected
 set ruler
 set encoding=utf8
@@ -75,7 +65,6 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal g'\"" | endif
 endif
-
 
 " CTags
 map <Leader>rt :!/usr/local/bin/ctags --extra=+f -R *<CR><CR>
@@ -135,7 +124,9 @@ set modelines=10
 set cursorline
 
 " Default color scheme
-color desert
+"color desert
+colorscheme monokai
+
 
 " Show (partial) command in the status line
 set showcmd
@@ -161,8 +152,6 @@ autocmd User Rails Rnavcommand fabricator spec/fabricators -suffix=_fabricator.r
 
 " Autocomplete Fabricator gem
 autocmd User Rails Rnavcommand decorator app/decorators -suffix=_decorator.rb -default=model()
-
-set foldmethod=syntax
 
 let g:Powerline_symbols = 'fancy'
 set t_Co=256

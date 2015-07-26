@@ -28,6 +28,11 @@ fi
 # Copy custom theme
 cp -f ~/.dotfiles/resources/pure-thb.zsh-theme ~/.oh-my-zsh/themes/
 
+# Setup vim
+mkdir -p ~/.vim/{colors,bundle}
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+curl https://raw.githubusercontent.com/sickill/vim-monokai/master/colors/monokai.vim > ~/.vim/colors/monokai.vim
+
 # Backup git user info
 gitUserName=$(git config --global user.name)
 gitUserEmail=$(git config --global user.email)

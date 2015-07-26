@@ -7,16 +7,15 @@ ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="pure-thb"
 
 #CASE_SENSITIVE="true"
-#DISABLE_AUTO_UPDATE="true"
-COMPLETION_WAITING_DOTS="true"
+DISABLE_AUTO_UPDATE="true"
 DISABLE_UPDATE_PROMPT="true"
+COMPLETION_WAITING_DOTS="true"
 
 plugins=(git docker docker-compose git history-substring-search)
 source $ZSH/oh-my-zsh.sh
 
 export HISTSIZE=20000
-
-export PATH=~/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH=~/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ##########################
 
@@ -40,10 +39,13 @@ alias gcdf='git clean -df'
 alias gcam='git commit --amend'
 alias gcamne='git commit --amend --no-edit'
 alias gspp='git stash && git pull --rebase && git stash pop'
-gri() { git rebase -i HEAD~$1; }
 alias glg='git lg --stat -C -4'
+gri() { git rebase -i HEAD~$1; }
 
 # Docker aliases
+alias dkd="docker run -d -P"
+alias dki="docker run --rm -P -ti"
+alias dclean='~/bin/docker-cleanup.sh'
 db() { docker build --rm -t="$1" .; }
 drm() { docker rm $(docker ps -q -a); }
 dri() { docker rmi $(docker images -q --filter "dangling=true"); }
@@ -52,20 +54,30 @@ dgob() { docker exec -ti $@ bash }
 dip() { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
 dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
-alias dkd="docker run -d -P"
-alias dki="docker run --rm -P -ti"
-alias dclean='~/bin/docker-cleanup.sh'
 dim() { docker images | grep $@; }
 
-# Others aliases
-alias tmux='tmux -2'
-
 # Apt
-alias get='sudo apt-get install -y'
+alias get='sudo apt-get install'
+alias gety='sudo apt-get install -y'
 alias search='sudo apt-cache search'
+
+####
+# Other aliases
+
+# Tmux with terminal supports 256 colours
+alias tmux='tmux -2'
 
 # Display listened ports
 alias wholisten='sudo netstat -antulp | grep LISTE'
+
+####
+# Helpful functions
+
+# @help randpwd $length
+randpwd() {
+  local length=${1:-42}
+  cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $length | head -1
+}
 
 # @help always $cmd $sleepDuration
 always() { while true; do "$1"; sleep $2; done; }
@@ -73,15 +85,11 @@ always() { while true; do "$1"; sleep $2; done; }
 # @help grepcode $path $fileExtension $grepRegexp
 grepcode() { find $1 -name "*.$2" | xargs grep -Hn $3; }
 
-# curl with response code and total time
+# cURL functions
 cuurl() { curl $@ -w "\n@status=%{response_code}\n@time=%{time_total}\n"; }
-
-# curl and format response with JQ
-jc() { curl -s "$1" | jq .; }
-
-# curl localhost
-cl() { curl -s localhost:$@; }
-jcl() { curl -s localhost:$@ | jq .; }
+jc()    { curl -s "$1" | jq .; }
+cl()    { curl -s localhost:$@; }
+jcl()   { curl -s localhost:$@ | jq .; }
 
 # update dotfiles
 updot() { cd ~/.dotfiles; git pull --rebase; ./install.sh; }
@@ -99,6 +107,9 @@ update_repo() {
 create_push_repo() {
   curl -s https://gist.githubusercontent.com/thbkrkr/d37ea4a4f912286ceb9b/raw/cce043b32a14b023868928a728aecf1f7c820b7b/prepare-pushgitrepo.sh | sh -s $1
 }
+
+####
+# Docker functions
 
 --docker-socket() {
   echo "-v /var/run/docker.sock:/var/run/docker.sock"
@@ -130,13 +141,13 @@ push() {
   docker push $repo/$name
 }
 
-play() {
+d_devopsbox() {
   docker run --rm -ti \
     -v $(pwd):/ops \
     krkr/devopsbox $@
 }
 
-compose() {
+d_compose() {
   docker run --rm -ti \
     $(--docker-socket) \
     -v $(pwd):/compose \
@@ -147,11 +158,6 @@ dcurl() {
   docker run --rm -ti \
     krkr/curl \
     curl -sSL --connect-timeout 3 $@ -o /dev/null -w '{"status":"%{http_code}","time":"%{time_total}"}\n'
-}
-
-randpwd() {
-  local length=${1:-42}
-  cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $length | head -1
 }
 
 ##########################

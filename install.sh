@@ -4,8 +4,10 @@
 #
 # @deps : apt-get, git
 
-# Install Zsh
+# Backup .zshrc
 [ -f ~/.zshrc ] && cp ~/.zshrc ~/.zshrc.save.$(date +%s)
+
+# Install Zsh
 if [ $(which zsh > /dev/null; echo $?) -eq 1 ]
 then
     touch ~/.zshrc 
@@ -13,7 +15,7 @@ then
 fi
 sudo chsh -s `which zsh` `whoami`
 
-# Clone oh-my-zsh
+# Clone or update oh-my-zsh
 if [ ! -d ~/.oh-my-zsh ]
 then
     git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
@@ -23,6 +25,7 @@ else
     cd
 fi
 
+# Copy custom theme
 cp -f ~/.dotfiles/resources/pure-thb.zsh-theme ~/.oh-my-zsh/themes/
 
 # Backup git user info
@@ -39,6 +42,7 @@ mkdir -p ~/bin && cp -f ~/.dotfiles/bin/* ~/bin
 git config --global user.name $gitUserName
 git config --global user.email $gitUserEmail
 
-[ "x$gitUserName" = "x" ] && echo "Please update your git user.name, user.email : vi ~/.gitconfig"
+[ "x$gitUserName" = "x" ] && \
+  echo "Please update your git user.name, user.email : vi ~/.gitconfig"
 
 zsh

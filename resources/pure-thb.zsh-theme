@@ -18,9 +18,6 @@
 # %m => shortname host
 # %(?..) => prompt conditional - %(condition.true.false)
 
-#LANG="en_US git"
-#LC_ALL="en_US git"
-
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s
 prompt_pure_human_time() {
@@ -127,7 +124,7 @@ prompt_pure_setup() {
 	# if output doesn't end with a newline
 	export PROMPT_EOL_MARK=''
 
-	prompt_opts=(cr subst percent)
+	prompt_opts=(subst percent)
 
 	autoload -Uz add-zsh-hook
 	autoload -Uz vcs_info
@@ -136,16 +133,25 @@ prompt_pure_setup() {
 	add-zsh-hook preexec prompt_pure_preexec
 
 	zstyle ':vcs_info:*' enable git
+	zstyle ':vcs_info:*' use-simple true
 	zstyle ':vcs_info:git*' formats ' %b'
 	zstyle ':vcs_info:git*' actionformats ' %b|%a'
+
+	prompt_pure_username='%n@%m '
 
 	# show username@host if logged in through SSH
 	#[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%n@%m '
 
-	# or show it always
-	local is_docker=""
-	[ -f /.dockerinit ] && is_docker=" %F{yellow}[docker]%f"
-	prompt_pure_username="%n@%m$is_docker"
+	# show username@host if root, with username in white
+	#[[ $UID -eq 0 ]] && prompt_pure_username=' %F{white}%n%f%F{242}@%m%f'
+	
+	# show [docker-machine:<name>] if eval $(docker-machine env <name>)
+	[[ "$DOCKER_MACHINE_NAME" != '' ]] && \
+		prompt_pure_username="[%F{yellow}docker-machine%f:%F{cyan}$DOCKER_MACHINE_NAME%f] %n@%m"
+
+	# show [docker-machine:<name>] if logged in throug a Docker container
+	[[ -f /.dockerinit ]] && \
+		prompt_pure_username="$prompt_pure_username [%F{yellow}[indocker]%f]"
 
 	# prompt turns red if the previous command didn't exit with 0
 	PROMPT='%(?.%F{magenta}.%F{red})>%f '

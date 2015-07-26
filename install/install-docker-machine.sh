@@ -2,7 +2,7 @@
 #
 # Install Docker Machine (https://github.com/docker/machine)
 
-DOCKER_MACHINE_VERSION=0.3.0
+DOCKER_MACHINE_VERSION=0.3.1
 DOCKER_MACHINE_URL=https://github.com/docker/machine/releases/download/v${DOCKER_MACHINE_VERSION}/docker-machine_linux-amd64
 
 is_up2date() {

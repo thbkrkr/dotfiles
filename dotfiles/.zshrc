@@ -11,7 +11,7 @@ DISABLE_AUTO_UPDATE="true"
 DISABLE_UPDATE_PROMPT="true"
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(git docker docker-compose git history-substring-search)
+plugins=(git docker docker-compose git history-substring-search go)
 source $ZSH/oh-my-zsh.sh
 
 export HISTSIZE=20000

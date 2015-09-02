@@ -46,15 +46,15 @@ gri() { git rebase -i HEAD~$1; }
 alias dkd="docker run -d -P"
 alias dki="docker run --rm -P -ti"
 alias dclean='~/bin/docker-cleanup.sh'
-db() { docker build --rm -t="$1" .; }
-drm() { docker rm $(docker ps -q -a); }
-dri() { docker rmi $(docker images -q --filter "dangling=true"); }
-dgo() { docker exec -ti $@ sh }
+db()   { docker build --rm -t="$1" .; }
+drm()  { docker rm $(docker ps -qa --filter 'status=exited'); }
+dri()  { docker rmi $(docker images -q --filter "dangling=true"); }
+dgo()  { docker exec -ti $@ sh }
 dgob() { docker exec -ti $@ bash }
-dip() { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
+dip()  { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
 dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
-dim() { docker images | grep $@; }
+dim()  { docker images | grep $@; }
 
 # Apt
 alias get='sudo apt-get install'

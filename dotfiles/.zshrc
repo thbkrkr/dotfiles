@@ -49,6 +49,7 @@ alias dclean='~/bin/docker-cleanup.sh'
 db()   { docker build --rm -t="$1" .; }
 drm()  { docker rm $(docker ps -qa --filter 'status=exited'); }
 dri()  { docker rmi $(docker images -q --filter "dangling=true"); }
+dka()  { docker rm -f $(docker ps -aq) }
 dgo()  { docker exec -ti $@ sh }
 dgob() { docker exec -ti $@ bash }
 dip()  { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }

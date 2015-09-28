@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 #usage: sudo ./docker-cleanup-volumes.sh [--dry-run]
 

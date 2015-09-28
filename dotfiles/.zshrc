@@ -14,12 +14,13 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git docker docker-compose git history-substring-search go)
 source $ZSH/oh-my-zsh.sh
 
-export HISTSIZE=20000
+export HISTSIZE=100000
 export PATH=~/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ##########################
 
 # Tiny aliases
+alias a='ansible'
 alias c='clear'
 alias d='docker'
 alias dc='docker-compose'
@@ -28,7 +29,6 @@ alias g='git'
 alias h='history'
 alias m='make'
 alias s='ssh'
-alias cr='crane'
 
 # Git aliases
 alias gs='git status'
@@ -47,15 +47,16 @@ alias dkd="docker run -d -P"
 alias dki="docker run --rm -P -ti"
 alias dclean='~/bin/docker-cleanup.sh'
 db()   { docker build --rm -t="$1" .; }
-drm()  { docker rm $(docker ps -qa --filter 'status=exited'); }
+drm()  { docker rm $(docker ps -qa); }
+drme() { docker rm $(docker ps -qa --filter 'status=exited'); }
 dri()  { docker rmi $(docker images -q --filter "dangling=true"); }
 dka()  { docker rm -f $(docker ps -aq) }
 dgo()  { docker exec -ti $@ sh }
 dgob() { docker exec -ti $@ bash }
 dip()  { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
-dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
 dim()  { docker images | grep $@; }
+dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
 
 # Apt
 alias get='sudo apt-get install'
@@ -92,13 +93,13 @@ jc()    { curl -s "$1" | jq .; }
 cl()    { curl -s localhost:$@; }
 jcl()   { curl -s localhost:$@ | jq .; }
 
-# update dotfiles
+# Update dotfiles
 updot() { cd ~/.dotfiles; git pull --rebase; ./install.sh; }
 
 # Display the IP and geo information of the current machine
 geoip() { curl -s www.telize.com/geoip | jq .; }
 
-# update a specific apt repo
+# Update a specific apt repo
 # @help update_repo docker
 update_repo() {
   sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/$1.list" \

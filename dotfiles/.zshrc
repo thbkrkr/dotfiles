@@ -64,6 +64,7 @@ dpush() {
   docker tag -f $name $repo/$name
   docker push $repo/$name
 }
+dme() { eval $(docker-machine env $1); }
 
 # Apt
 alias get='sudo apt-get install'

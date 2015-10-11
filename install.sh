@@ -1,53 +1,64 @@
-#!/bin/sh
+#!/bin/sh -eu
 #
 # Install and configure Zsh, oh-my-zsh and dotfiles.
 #
-# @deps : apt-get, git
+# @deps : apt-get, sudo, git
 
-# Backup .zshrc
-[ -f ~/.zshrc ] && cp ~/.zshrc ~/.zshrc.save.$(date +%s)
+echo "Install .dotfiles..."
 
 # Install Zsh
 if [ $(which zsh > /dev/null; echo $?) -eq 1 ]
 then
-    touch ~/.zshrc 
-    sudo apt-get install -y zsh
+  touch $HOME/.zshrc 
+  sudo apt-get install -y zsh
+  sudo chsh -s `which zsh` `whoami`
 fi
-sudo chsh -s `which zsh` `whoami`
 
 # Clone or update oh-my-zsh
-if [ ! -d ~/.oh-my-zsh ]
-then
-    git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+ohMyZshDir=$HOME/.oh-my-zsh
+if [ ! -d $ohMyZshDir ]; then
+  git clone -q https://github.com/robbyrussell/oh-my-zsh.git $ohMyZshDir
 else
-    cd ~/.oh-my-zsh
-    git pull --rebase
-    cd
+  git --git-dir=$ohMyZshDir/.git --work-tree=$ohMyZshDir pull -q --rebase
 fi
 
 # Copy custom theme
-cp -f ~/.dotfiles/resources/pure-thb.zsh-theme ~/.oh-my-zsh/themes/
+cp -f $HOME/.dotfiles/resources/pure-thb.zsh-theme $ohMyZshDir/themes/
 
-# Setup vim
-mkdir -p ~/.vim/{colors,bundle}
-git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-curl https://raw.githubusercontent.com/sickill/vim-monokai/master/colors/monokai.vim > ~/.vim/colors/monokai.vim
+# Configure VIM
+
+# Clone or update Vundle.vim
+mkdir -p $HOME/.vim/bundle
+vundleDir=$HOME/.vim/bundle/Vundle.vim
+if [ ! -d $vundleDir ]; then
+  git clone -q https://github.com/gmarik/Vundle.vim.git $vundleDir
+else
+  git --git-dir=$vundleDir/.git --work-tree=$vundleDir pull -q --rebase
+fi
+# Install monokai colors
+mkdir -p $HOME/.vim/colors
+curl -s https://raw.githubusercontent.com/sickill/vim-monokai/master/colors/monokai.vim \
+  > $HOME/.vim/colors/monokai.vim
 
 # Backup git user info
+set +e
 gitUserName=$(git config --global user.name)
 gitUserEmail=$(git config --global user.email)
+set -e
 
 # Copy all dotfiles
-cp -f ~/.dotfiles/dotfiles/.[a-z]* ~/
+cp -f $HOME/.dotfiles/dotfiles/.[a-z]* $HOME/
 
 # Copy all utils scripts
-mkdir -p ~/bin && cp -f ~/.dotfiles/bin/* ~/bin
+mkdir -p $HOME/bin && cp -f $HOME/.dotfiles/bin/* $HOME/bin
 
 # Restore git user info
+set +e
 git config --global user.name $gitUserName
 git config --global user.email $gitUserEmail
+set -e
 
 [ "x$gitUserName" = "x" ] && \
-  echo "Please update your git user.name, user.email : vi ~/.gitconfig"
+  echo "Please update your git user.name, user.email : vi $HOME/.gitconfig"
 
 zsh

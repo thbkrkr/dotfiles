@@ -93,13 +93,25 @@ prompt_pure_string_length() {
 
 prompt_pure_precmd() {
 	# shows the full path in the title
-	local current_path='\e]0;%~\a'
-	print -Pn $current_path
+	#local current_path='\e]0;%~\a'
+	#print -Pn $current_path
 
 	# git info
 	vcs_info
 
-	local prompt_pure_preprompt='\n%{$FG[033]%}%~%F{white}$vcs_info_msg_0_%f `prompt_pure_git_status` $prompt_pure_username%f %F{yellow}`prompt_pure_cmd_exec_time`%f'
+	# show [docker-machine:<name>] if eval $(docker-machine env <name>)
+	dm_storage=$(echo "$MACHINE_STORAGE_PATH" | sed "s|.*/||")
+	[[ "$dm_storage" != "" ]] && \
+		part1="[%F{yellow}machines%f:%F{cyan}$dm_storage%f] "
+
+	# show [docker-machine:<name>] if eval $(docker-machine env <name>)
+	[[ "$DOCKER_MACHINE_NAME" != "" ]] && \
+		part2="[%F{yellow}machine%f:%F{green}$DOCKER_MACHINE_NAME%f] "
+
+	[[ "$VPN" != "" ]] && \
+		part3="[%F{yellow}vpn%f:%F{red}$VPN%f] "
+
+	local prompt_pure_preprompt='\n%{$FG[033]%}%~%F{white}$vcs_info_msg_0_%f `prompt_pure_git_status` $part1$part2$part3$prompt_pure_username %F{yellow}`prompt_pure_cmd_exec_time`%f'
 	print -P $prompt_pure_preprompt
 
 	# check async if there is anything to pull
@@ -140,18 +152,14 @@ prompt_pure_setup() {
 	prompt_pure_username='%n@%m '
 
 	# show username@host if logged in through SSH
-	#[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%n@%m '
+	[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%n@%m (%F{yellow}ssh%f)'
 
-	# show username@host if root, with username in white
-	#[[ $UID -eq 0 ]] && prompt_pure_username=' %F{white}%n%f%F{242}@%m%f'
+	# show root@host if root, with root in white
+	[[ $UID -eq 0 ]] && prompt_pure_username=' %F{red}%n%f%F{242}@%m%f'
 	
-	# show [docker-machine:<name>] if eval $(docker-machine env <name>)
-	[[ "$DOCKER_MACHINE_NAME" != '' ]] && \
-		prompt_pure_username="[%F{yellow}docker-machine%f:%F{cyan}$DOCKER_MACHINE_NAME%f] %n@%m"
-
 	# show [docker-machine:<name>] if logged in throug a Docker container
 	[[ -f /.dockerinit ]] && \
-		prompt_pure_username="$prompt_pure_username [%F{yellow}[indocker]%f]"
+		prompt_pure_username="$prompt_pure_username [%F{yellow}indocker%f]"
 
 	# prompt turns red if the previous command didn't exit with 0
 	PROMPT='%(?.%F{magenta}.%F{red})>%f '

@@ -29,9 +29,9 @@ alias g='git'
 alias h='history'
 alias m='make'
 alias s='ssh'
+alias sb=sensible-browser
 
 # Git aliases
-alias gs='git status'
 alias gst='git status'
 alias gpr='git pull --rebase'
 alias grrh='git reset --hard HEAD'
@@ -46,6 +46,7 @@ gri() { git rebase -i HEAD~$1; }
 alias dkd="docker run -d -P"
 alias dki="docker run --rm -P -ti"
 alias dclean='~/bin/docker-cleanup.sh'
+alias dcleanvol='~/bin/docker-cleanup-volumes.sh'
 db()   { docker build --rm -t="$1" .; }
 drm()  { docker rm $(docker ps -qa); }
 drme() { docker rm $(docker ps -qa --filter 'status=exited'); }
@@ -57,6 +58,12 @@ dip()  { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
 dim()  { docker images | grep $@; }
 dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
+dpush() {
+  declare name=$1
+  declare repo=$2
+  docker tag -f $name $repo/$name
+  docker push $repo/$name
+}
 
 # Apt
 alias get='sudo apt-get install'
@@ -98,9 +105,11 @@ updot() { cd ~/.dotfiles; git pull --rebase; ./install.sh; }
 
 # Display the IP and geo information of the current machine
 geoip() { curl -s www.telize.com/geoip | jq .; }
+# Display only the IP
+alias myip='curl ipaddr.ovh'
 
 # Update a specific apt repo
-# @help update_repo docker
+# @help update_repo $repoName
 update_repo() {
   sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/$1.list" \
     -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
@@ -108,58 +117,6 @@ update_repo() {
 
 create_push_repo() {
   curl -s https://gist.githubusercontent.com/thbkrkr/d37ea4a4f912286ceb9b/raw/cce043b32a14b023868928a728aecf1f7c820b7b/prepare-pushgitrepo.sh | sh -s $1
-}
-
-####
-# Docker functions
-
---docker-socket() {
-  echo "-v /var/run/docker.sock:/var/run/docker.sock"
-}
-
---docker() {
-  echo "-v /usr/bin/docker:/usr/bin/docker"
-}
-
-dev() {
-  docker run --rm -ti \
-    $(--docker-socket) $(--docker) \
-    -v $(pwd):/work \
-    krkr/devbox
-}
-
-build() {
-  docker run --rm -ti \
-    $(--docker-socket) $(--docker) \
-    -e REPO=$REPO \
-    -v $(pwd):/src \
-    krkr/docker-builder build $@
-}
-
-push() {
-  declare name=$1
-  declare repo=$2
-  docker tag -f $name $repo/$name
-  docker push $repo/$name
-}
-
-d_devopsbox() {
-  docker run --rm -ti \
-    -v $(pwd):/ops \
-    krkr/devopsbox $@
-}
-
-d_compose() {
-  docker run --rm -ti \
-    $(--docker-socket) \
-    -v $(pwd):/compose \
-    krkr/dc $@
-}
-
-dcurl() {
-  docker run --rm -ti \
-    krkr/curl \
-    curl -sSL --connect-timeout 3 $@ -o /dev/null -w '{"status":"%{http_code}","time":"%{time_total}"}\n'
 }
 
 ##########################

@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Live reload for Go programs
+#
+set -eu
+
+here=$(pwd)
+name=$(basename $here)
+
+kill_and_build() {
+  set +e
+  pkill $name
+  set -e
+  echo "go build -o $name && ./$name $@ &"
+  go build -o $name && ./$name "$@" &
+}
+
+watch_go_files() {
+  inotifywait -qe create,delete,modify \
+    $(find $here -name "*.go")
+}
+
+main() {
+    cd $here
+    kill_and_build "$@"
+    while true; do
+        watch_go_files && kill_and_build "$@"
+    done
+}
+
+main "$@"

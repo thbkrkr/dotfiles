@@ -23,13 +23,14 @@ export PATH=~/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/
 alias a='ansible'
 alias c='clear'
 alias d='docker'
-alias dc='docker-compose'
-alias dm='docker-machine'
 alias g='git'
 alias h='history'
 alias m='make'
 alias s='ssh'
-alias sb=sensible-browser
+alias dc='docker-compose'
+alias dm='docker-machine'
+alias sb='sensible-browser'
+alias tf='terraform'
 
 # Git aliases
 alias gst='git status'
@@ -64,7 +65,8 @@ dpush() {
   docker tag -f $name $repo/$name
   docker push $repo/$name
 }
-dme() { eval $(docker-machine env $1); }
+dme()  { eval $(docker-machine env $1); }
+dmes() { eval $(docker-machine env --swarm $1); }
 
 # Apt
 alias get='sudo apt-get install'

@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/bash -eu
 #
 # Install and configure Zsh, oh-my-zsh and dotfiles.
 #
@@ -7,7 +7,7 @@
 echo "Install .dotfiles..."
 
 # Install Zsh
-if [ $(which zsh > /dev/null; echo $?) -eq 1 ]
+if [ $(which zsh &> /dev/null; echo $?) -eq 1 ]
 then
   touch $HOME/.zshrc 
   sudo apt-get install -y zsh

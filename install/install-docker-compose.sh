@@ -2,7 +2,7 @@
 #
 # Install Docker Compose (https://github.com/docker/compose)
 
-DOCKER_COMPOSE_VERSION=1.4.2
+DOCKER_COMPOSE_VERSION=1.5.2
 DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64
 
 is_up2date() {

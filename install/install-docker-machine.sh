@@ -2,7 +2,7 @@
 #
 # Install Docker Machine (https://github.com/docker/machine)
 
-DOCKER_MACHINE_VERSION=0.4.1
+DOCKER_MACHINE_VERSION=0.5.6
 DOCKER_MACHINE_URL=https://github.com/docker/machine/releases/download/v${DOCKER_MACHINE_VERSION}/docker-machine_linux-amd64
 
 is_up2date() {
@@ -13,8 +13,8 @@ is_up2date() {
 if ! is_up2date
 then
     echo "Install docker-machine v$DOCKER_MACHINE_VERSION..."
-    sudo wget ${DOCKER_MACHINE_URL} -O /usr/bin/local/docker-machine \
-        && sudo chmod 755 /usr/bin/local/docker-machine
+    curl -L ${DOCKER_MACHINE_URL} > /usr/local/bin/docker-machine && \
+		  sudo chmod +x /usr/local/bin/docker-machine
 else
     echo "docker-machine v$DOCKER_MACHINE_VERSION is up-to-date"
 fi

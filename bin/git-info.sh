@@ -2,7 +2,7 @@
 #
 # Generate information about the artefact (git sha1 and date) using the current local git repository
 #
-# git-info.js [destination_file]
+# git-info.sh [destination_file]
 
 HERE=$(dirname $($(type -P greadlink || type -P readlink) -f "$0"))
 MD5=$(type -P md5 || type -P md5sum)

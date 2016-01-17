@@ -102,11 +102,11 @@ prompt_pure_precmd() {
 	# show [docker-machine:<name>] if eval $(docker-machine env <name>)
 	dm_storage=$(echo "$MACHINE_STORAGE_PATH" | sed "s|.*/||")
 	[[ "$dm_storage" != "" ]] && \
-		part1="[%F{yellow}machines%f:%F{cyan}$dm_storage%f] "
+		part1="[%F{yellow}cluster%f:%F{cyan}$dm_storage%f] "
 
 	# show [docker-machine:<name>] if eval $(docker-machine env <name>)
 	[[ "$DOCKER_MACHINE_NAME" != "" ]] && \
-		part2="[%F{yellow}machine%f:%F{green}$DOCKER_MACHINE_NAME%f] "
+		part2="[%F{yellow}node%f:%F{green}$DOCKER_MACHINE_NAME%f] "
 
 	[[ "$VPN" != "" ]] && \
 		part3="[%F{yellow}vpn%f:%F{red}$VPN%f] "
@@ -156,7 +156,7 @@ prompt_pure_setup() {
 
 	# show root@host if root, with root in white
 	[[ $UID -eq 0 ]] && prompt_pure_username=' %F{red}%n%f%F{242}@%m%f'
-	
+
 	# show [docker-machine:<name>] if logged in throug a Docker container
 	[[ -f /.dockerinit ]] && \
 		prompt_pure_username="$prompt_pure_username [%F{yellow}indocker%f]"

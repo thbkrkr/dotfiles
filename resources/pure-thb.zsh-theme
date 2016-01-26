@@ -100,32 +100,33 @@ prompt_pure_precmd() {
 	vcs_info
 
 	# show [docker-machine:<name>] if eval $(docker-machine env <name>)
+	MACHINE_STORAGE_PATH=${MACHINE_STORAGE_PATH:-""}
+	part1=""
 	dm_storage=$(echo "$MACHINE_STORAGE_PATH" | sed "s|.*/||")
 	[[ "$dm_storage" != "" ]] && \
 		part1="[%F{yellow}cluster%f:%F{cyan}$dm_storage%f] "
 
 	# show [docker-machine:<name>] if eval $(docker-machine env <name>)
+	part2=""
+	DOCKER_MACHINE_NAME=${DOCKER_MACHINE_NAME:-""}
 	[[ "$DOCKER_MACHINE_NAME" != "" ]] && \
 		part2="[%F{yellow}node%f:%F{green}$DOCKER_MACHINE_NAME%f] "
 
-	[[ "$VPN" != "" ]] && \
-		part3="[%F{yellow}vpn%f:%F{red}$VPN%f] "
-
-	local prompt_pure_preprompt='\n%{$FG[033]%}%~%F{white}$vcs_info_msg_0_%f `prompt_pure_git_status` $part1$part2$part3$prompt_pure_username %F{yellow}`prompt_pure_cmd_exec_time`%f'
+	local prompt_pure_preprompt='\n%{$FG[033]%}%~%F{white}$vcs_info_msg_0_%f `prompt_pure_git_status` $part1$part2$prompt_pure_username %F{yellow}`prompt_pure_cmd_exec_time`%f'
 	print -P $prompt_pure_preprompt
 
 	# check async if there is anything to pull
-	(( ${PURE_GIT_PULL:-1} )) && {
-	 	# check if we're in a git repo
-	 	command git rev-parse --is-inside-work-tree &>/dev/null &&
+	#(( ${PURE_GIT_PULL:-1} )) && {
+	# 	# check if we're in a git repo
+	# 	command git rev-parse --is-inside-work-tree &>/dev/null &&
 	 	# check check if there is anything to pull
-	 	command git fetch &>/dev/null #&&
+	# 	command git fetch &>/dev/null #&&
 	# 	# check if there is an upstream configured for this branch
 	# 	command git rev-parse --abbrev-ref @'{u}' &>/dev/null &&
 	# 	(( $(command git rev-list --right-only --count HEAD...@'{u}' 2>/dev/null) > 0 )) &&
 	# 	# some crazy ansi magic to inject the symbol into the previous line
 	# 	print -Pn "\e7\e[A\e[1G\e[`prompt_pure_string_length $prompt_pure_preprompt`C%F{cyan}⇣%f\e8"
-	} &!
+	#} &!
 
 	# reset value since `preexec` isn't always triggered
 	unset cmd_timestamp

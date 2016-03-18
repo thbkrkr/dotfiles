@@ -1,0 +1,19 @@
+#!/bin/bash
+
+main() {
+  declare currentDir=$(pwd)
+
+  while true
+  do
+    [[ "$currentDir" = "/" ]] && break
+
+    if [[ "$currentDir" =~ src$ ]]; then
+      echo "export GOPATH=$(dirname $currentDir)"
+      export GOPATH=$(dirname $currentDir)
+    fi
+
+    currentDir=$(dirname $currentDir)
+  done
+}
+
+main

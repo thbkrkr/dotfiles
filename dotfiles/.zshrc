@@ -51,6 +51,7 @@ alias dcleanvol='~/bin/docker-cleanup-volumes.sh'
 db()   { docker build --rm -t="$1" .; }
 drm()  { docker rm $(docker ps -qa); }
 drme() { docker rm $(docker ps -qa --filter 'status=exited'); }
+dvrm() { docker volume ls -qf dangling=true | xargs -r docker volume rm; }
 dri()  { docker rmi $(docker images -q --filter "dangling=true"); }
 dka()  { docker rm -f $(docker ps -aq) }
 dgo()  { docker exec -ti $@ sh }

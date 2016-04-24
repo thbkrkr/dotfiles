@@ -1,0 +1,7 @@
+git filter-branch -f --commit-filter '
+  GIT_COMMITTER_NAME="thbkrkr";
+  GIT_AUTHOR_NAME="thbkrkr";
+  GIT_COMMITTER_EMAIL="thb.krkr@gmail.com";
+  GIT_AUTHOR_EMAIL="thb.krkr@gmail.com";
+  git commit-tree "$@";
+' HEAD

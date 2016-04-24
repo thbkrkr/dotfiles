@@ -44,28 +44,28 @@ alias glg='git lg --stat -C -4'
 gri() { git rebase -i HEAD~$1; }
 
 # Docker aliases
-alias dkd="docker run -d -P"
-alias dki="docker run --rm -P -ti"
+alias drud="docker run -d -P"
+alias drui="docker run --rm -P -ti"
+dim()  { docker images | grep $@; }
+
 alias dclean='~/bin/docker-cleanup.sh'
 alias dcleanvol='~/bin/docker-cleanup-volumes.sh'
-db()   { docker build --rm -t="$1" .; }
 drm()  { docker rm $(docker ps -qa); }
 drme() { docker rm $(docker ps -qa --filter 'status=exited'); }
+dka() { docker rm -f $(docker ps -aq) }
+drmi() { docker rmi $(docker images -q --filter "dangling=true"); }
 dvrm() { docker volume ls -qf dangling=true | xargs -r docker volume rm; }
-dri()  { docker rmi $(docker images -q --filter "dangling=true"); }
-dka()  { docker rm -f $(docker ps -aq) }
-dgo()  { docker exec -ti $@ sh }
-dgob() { docker exec -ti $@ bash }
+
 dip()  { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
-dim()  { docker images | grep $@; }
+
+dgo()  { docker exec -ti $@ sh }
+dgob() { docker exec -ti $@ bash }
+dgoz() { docker exec -ti $@ zsh }
+
 dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
-dpush() {
-  declare name=$1
-  declare repo=$2
-  docker tag -f $name $repo/$name
-  docker push $repo/$name
-}
+
+# Docker machine aliases
 dme()  { eval $(docker-machine env --shell zsh $1); }
 dmes() { eval $(docker-machine env --shell zsh --swarm $1); }
 
@@ -119,8 +119,14 @@ update_repo() {
     -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
 }
 
+# Create a Git repo ready to accept push and with a post-receive to checkout the working directory
 create_push_repo() {
   curl -s https://gist.githubusercontent.com/thbkrkr/d37ea4a4f912286ceb9b/raw/cce043b32a14b023868928a728aecf1f7c820b7b/prepare-pushgitrepo.sh | sh -s $1
+}
+
+# Tail and grep syslog as sudo
+stf() {
+  sudo tail -f /var/log/syslog  | grep $1
 }
 
 ##########################

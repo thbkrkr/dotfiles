@@ -129,6 +129,11 @@ stf() {
   sudo tail -f /var/log/syslog  | grep $1
 }
 
+# Source a .env file in 'VAR=value' format (used in the docker world)
+sourcenv() {
+  export $(cat $1 | xargs)
+}
+
 ##########################
 
 # Source optional ~/.myzshrc

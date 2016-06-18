@@ -21,6 +21,7 @@ export PATH=~/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/
 
 # Tiny aliases
 alias a='ansible'
+alias ap='ansible-playbook'
 alias c='clear'
 alias d='docker'
 alias g='git'
@@ -52,16 +53,17 @@ alias dclean='~/bin/docker-cleanup.sh'
 alias dcleanvol='~/bin/docker-cleanup-volumes.sh'
 drm()  { docker rm $(docker ps -qa); }
 drme() { docker rm $(docker ps -qa --filter 'status=exited'); }
-dka() { docker rm -f $(docker ps -aq) }
 drmi() { docker rmi $(docker images -q --filter "dangling=true"); }
 dvrm() { docker volume ls -qf dangling=true | xargs -r docker volume rm; }
+dka() { docker rm -f $(docker ps -aq); }
+dps() { docker ps -a --format 'table{{.Names}}\t{{.Status}}'; }
 
-dip()  { docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"; }
+dip()  { docker inspect --format '{{ .NetworkSettings }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
 
-dgo()  { docker exec -ti $@ sh }
-dgob() { docker exec -ti $@ bash }
-dgoz() { docker exec -ti $@ zsh }
+dexecsh()  { docker exec -ti $@ sh }
+dexecbash() { docker exec -ti $@ bash }
+dexeczsh() { docker exec -ti $@ zsh }
 
 dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
 

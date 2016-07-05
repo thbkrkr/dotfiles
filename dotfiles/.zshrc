@@ -133,7 +133,14 @@ stf() {
 
 # Source a .env file in 'VAR=value' format (used in the docker world)
 sourcenv() {
-  export $(cat $1 | xargs)
+  if [[ "$1" != "" ]]; then
+    export $(cat $1 | xargs)
+  else
+    while read envfile; do
+      echo "source $envfile"
+      export $(cat $envfile | xargs)
+    done < <(find . -name "*.env")
+  fi
 }
 
 ##########################

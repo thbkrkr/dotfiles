@@ -57,6 +57,7 @@ drmi() { docker rmi $(docker images -q --filter "dangling=true"); }
 dvrm() { docker volume ls -qf dangling=true | xargs -r docker volume rm; }
 dka() { docker rm -f $(docker ps -aq); }
 dps() { docker ps -a --format 'table{{.Names}}\t{{.Status}}'; }
+dpsm() { docker ps -a --format 'table{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}'; }
 
 dip()  { docker inspect --format '{{ .NetworkSettings }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }

@@ -45,36 +45,34 @@ alias glg='git lg --stat -C -4'
 gri() { git rebase -i HEAD~$1; }
 
 # Docker aliases
-alias drud="docker run -d -P"
-alias drui="docker run --rm -P -ti"
+dps()  { docker ps -a --format 'table{{.Names}}\t{{.Status}}'; }
+dpsa() { docker ps -a --format 'table{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}'; }
+
 dim()  { docker images | grep $@; }
 
-alias dclean='~/bin/docker-cleanup.sh'
-alias dcleanvol='~/bin/docker-cleanup-volumes.sh'
-drm()  { docker rm $(docker ps -qa); }
-drme() { docker rm $(docker ps -qa --filter 'status=exited'); }
-drmi() { docker rmi $(docker images -q --filter "dangling=true"); }
-dvrm() { docker volume ls -qf dangling=true | xargs -r docker volume rm; }
-dka() { docker rm -f $(docker ps -aq); }
-dps() { docker ps -a --format 'table{{.Names}}\t{{.Status}}'; }
-dpsm() { docker ps -a --format 'table{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}'; }
+alias xd='xargs -r docker'
+drmc() { docker ps -qa --filter 'status=dead' --filter 'status=exited' | xd rm ; }
+drmi() { docker images -q --filter "dangling=true" | xd rmi; }
+drmv() { docker volume ls -qf | xd volume rm; }
+drmn() { docker network ls -qf | xd network rm; }
+drmall() { drmc; drmi; drmv; drmn; }
+dkillall()  { docker ps -aq | xd rm -f; }
+dstopall()  { docker ps -aq | xargs -r docker stop; }
 
 dip()  { docker inspect --format '{{ .NetworkSettings }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
 
-dexecsh()  { docker exec -ti $@ sh }
-dexecbash() { docker exec -ti $@ bash }
-dexeczsh() { docker exec -ti $@ zsh }
+dsh()  { docker exec -ti $@ sh }
+dbash() { docker exec -ti $@ bash }
+dzsh() { docker exec -ti $@ zsh }
 
 dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
 
 # Docker machine aliases
 dme()  { eval $(docker-machine env --shell zsh $1); }
-dmes() { eval $(docker-machine env --shell zsh --swarm $1); }
 
 # Apt
-alias get='sudo apt-get install'
-alias gety='sudo apt-get install -y'
+alias get='sudo apt-get install -y'
 alias search='sudo apt-cache search'
 
 ####

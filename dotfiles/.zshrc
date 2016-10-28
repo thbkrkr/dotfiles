@@ -101,7 +101,7 @@ grepcode() { find $1 -name "*.$2" | xargs grep -Hn $3; }
 
 # cURL functions
 cuurl() { curl $@ -w "\n@status=%{response_code}\n@time=%{time_total}\n"; }
-jc()    { curl -s "$1" | jq .; }
+jc()    { curl -s $@ | jq .; }
 cl()    { curl -s localhost:$@; }
 jcl()   { curl -s localhost:$@ | jq .; }
 

@@ -53,8 +53,8 @@ dim()  { docker images | grep $@; }
 alias xd='xargs -r docker'
 drmc() { docker ps -qa --filter 'status=dead' --filter 'status=exited' | xd rm ; }
 drmi() { docker images -q --filter "dangling=true" | xd rmi; }
-drmv() { docker volume ls -qf | xd volume rm; }
-drmn() { docker network ls -qf | xd network rm; }
+drmv() { docker volume ls -q | xd volume rm; }
+drmn() { docker network ls -q | xd network rm; }
 drmall() { drmc; drmi; drmv; drmn; }
 dkillall()  { docker ps -aq | xd rm -f; }
 dstopall()  { docker ps -aq | xargs -r docker stop; }

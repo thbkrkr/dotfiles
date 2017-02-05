@@ -9,4 +9,6 @@ sudo apt-get install -y \
     jq \
     iftop htop \
     tree \
-    unzip
+    unzip \
+    netcat \
+    telnet

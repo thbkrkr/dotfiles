@@ -14,7 +14,7 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git history-substring-search go docker docker-compose)
 source $ZSH/oh-my-zsh.sh
 
-export HISTSIZE=1000000
+export HISTSIZE=10000000
 export PATH=~/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ##########################

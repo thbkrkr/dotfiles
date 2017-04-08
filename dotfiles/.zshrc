@@ -24,12 +24,13 @@ alias a='ansible'
 alias ap='ansible-playbook'
 alias c='clear'
 alias d='docker'
+alias dc='docker-compose'
+alias dm='docker-machine'
+alias e='echo'
 alias g='git'
 alias h='history'
 alias m='make'
 alias s='ssh'
-alias dc='docker-compose'
-alias dm='docker-machine'
 alias sb='sensible-browser'
 alias tf='terraform'
 
@@ -40,6 +41,7 @@ alias grrh='git reset --hard HEAD'
 alias gcdf='git clean -df'
 alias gcam='git commit --amend'
 alias gcamne='git commit --amend --no-edit'
+alias grpo='git remote prune origin'
 alias gspp='git stash && git pull --rebase && git stash pop'
 alias glg='git lg --stat -C -4'
 gri() { git rebase -i HEAD~$1; }
@@ -93,25 +95,26 @@ randpwd() {
   cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $length | head -1
 }
 
-# @help always $cmd $sleepDuration
-always() { while true; do "$1"; sleep $2; done; }
+# @help always $sleepDuration $cmd
+always() { duration=$1 && shift; while true; do $@; sleep $duration; done; }
 
 # @help grepcode $path $fileExtension $grepRegexp
 grepcode() { find $1 -name "*.$2" | xargs grep -Hn $3; }
 
 # cURL functions
-cuurl() { curl $@ -w "\n@status=%{response_code}\n@time=%{time_total}\n"; }
-jc()    { curl -s $@ | jq .; }
+curlv() { curl $@ -w "\n@status=%{response_code}\n@time=%{time_total}\n"; }
 cl()    { curl -s localhost:$@; }
+jc()    { curl -s $@ | jq .; }
 jcl()   { curl -s localhost:$@ | jq .; }
 
 # Update dotfiles
 updot() { cd ~/.dotfiles; git pull --rebase; ./install.sh; }
 
 # Display the IP and geo information of the current machine
-geoip() { curl -s www.telize.com/geoip | jq .; }
+geoip() { curl -s freegeoip.net/json/$(curl -s ipaddr.ovh) | jq .; }
+
 # Display only the IP
-alias myip='curl ipaddr.ovh'
+alias myip='curl -s ipaddr.ovh'
 
 # Update a specific apt repo
 # @help update_repo $repoName
@@ -126,7 +129,7 @@ create_push_repo() {
 }
 
 # Tail and grep syslog as sudo
-stf() {
+stfg() {
   sudo tail -f /var/log/syslog  | grep $1
 }
 

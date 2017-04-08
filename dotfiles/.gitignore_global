@@ -2,6 +2,6 @@
 
 target
 .target
-
+.env
 node_modules
 bower_components

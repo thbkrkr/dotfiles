@@ -140,7 +140,7 @@ sourcenv() {
   else
     while read envfile; do
       echo "source $envfile"
-      export $(cat $envfile | xargs)
+      export $(cat $envfile | grep -vE "(^#|^\s*$)" | xargs)
     done < <(find . -name "*.env")
   fi
 }

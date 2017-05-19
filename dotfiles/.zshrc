@@ -57,6 +57,7 @@ drmc() { docker ps -qa --filter 'status=dead' --filter 'status=exited' | xd rm ;
 drmi() { docker images -q --filter "dangling=true" | xd rmi; }
 drmv() { docker volume ls -q | xd volume rm; }
 drmn() { docker network ls | awk '{print $1,$2}' | tail -n +2 | egrep -Ev "( docker_gwbridge$| bridge$| host$| none$| ingress$)" | awk '{print $1}' | xd network rm; }
+drms() { d service ls | tail +2 | awk '{print $2}' | xd service rm; }
 drmall() { drmc; drmi; drmv; drmn; }
 dkillall()  { docker ps -aq | xd rm -f; }
 dstopall()  { docker ps -aq | xargs -r docker stop; }

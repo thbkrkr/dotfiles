@@ -44,6 +44,7 @@ alias gcamne='git commit --amend --no-edit'
 alias grpo='git remote prune origin'
 alias gspp='git stash && git pull --rebase && git stash pop'
 alias glg='git lg --stat -C -4'
+
 gri() { git rebase -i HEAD~$1; }
 
 # Docker aliases
@@ -53,11 +54,14 @@ dpsa() { docker ps -a --format 'table{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Por
 dim()  { docker images | grep $@; }
 
 alias xd='xargs -r docker'
-drmc() { docker ps -qa --filter 'status=dead' --filter 'status=exited' | xd rm ; }
+drmc() { docker ps -qa --filter 'status=dead' --filter 'status=exited' | xd rm; }
+drmcg() { docker ps -a | grep "${@:-a}" | awk '{print $1}' | xargs -n1 docker rm -f; }
 drmi() { docker images -q --filter "dangling=true" | xd rmi; }
+drmig() { docker images | grep "${@:-a}" | awk '{printf "%s:%s\n", $1, $2}' | xargs -n1 docker rmi -f; }
 drmv() { docker volume ls -q | xd volume rm; }
 drmn() { docker network ls | awk '{print $1,$2}' | tail -n +2 | egrep -Ev "( docker_gwbridge$| bridge$| host$| none$| ingress$)" | awk '{print $1}' | xd network rm; }
-drms() { d service ls | tail +2 | awk '{print $2}' | xd service rm; }
+drms() { docker service ls | tail -n +2 | awk '{print $2}' | xd service rm; }
+dprune() { docker system prune -f }
 drmall() { drmc; drmi; drmv; drmn; }
 dkillall()  { docker ps -aq | xd rm -f; }
 dstopall()  { docker ps -aq | xargs -r docker stop; }
@@ -107,6 +111,10 @@ curlv() { curl $@ -w "\n@status=%{response_code}\n@time=%{time_total}\n"; }
 cl()    { curl -s localhost:$@; }
 jc()    { curl -s $@ | jq .; }
 jcl()   { curl -s localhost:$@ | jq .; }
+kurl() {
+  curl -sSL --connect-timeout 3 $@ -o /dev/null \
+    -w '{"url":"%{url_effective}","status":"%{http_code}","time":"%{time_total}"}\n'
+}
 
 # Update dotfiles
 updot() { cd ~/.dotfiles; git pull --rebase; ./install.sh; }
@@ -115,7 +123,9 @@ updot() { cd ~/.dotfiles; git pull --rebase; ./install.sh; }
 geoip() { curl -s freegeoip.net/json/$(curl -s ipaddr.ovh) | jq .; }
 
 # Display only the IP
-alias myip='curl -s ipaddr.ovh'
+myip() {
+  curl -s ipaddr.ovh | sed "s/213.[0-9\.]*.64/vpn/"
+}
 
 # Update a specific apt repo
 # @help update_repo $repoName
@@ -133,6 +143,8 @@ create_push_repo() {
 stfg() {
   sudo tail -f /var/log/syslog  | grep $1
 }
+
+msg() { echo -n '{"user":"'$USER'@'$(hostname)'", "message":"'$@'"}'; }
 
 # Source a .env file in 'VAR=value' format (used in the docker world)
 sourcenv() {

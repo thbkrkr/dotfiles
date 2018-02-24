@@ -158,6 +158,75 @@ sourcenv() {
   fi
 }
 
+# Make subdirectories and move into them right away
+mdir(){
+  mkdir -p $1; cd $1
+  echo "You are now in $PWD"
+}
+
+# found at http://stackoverflow.com/a/245724/452140
+uup(){
+  LIMIT=$1
+  if [ -z "$LIMIT" ]; then
+    LIMIT=1
+  fi
+  P=$PWD
+  for ((i=1; i <= LIMIT; i++)); do
+    P=$P/..
+  done
+  cd $P
+  echo "You are now in $PWD"
+}
+
+# Configure git user
+gitcfg(){
+  if [ "$#" -lt "2" ] ; then
+      echo "Usage: gitcfg <user> <email>"
+      return 1
+  fi
+  declare username=$1 email=$2
+  git config user.name "$username"
+  git config user.email "$email"
+}
+
+# Search files given a pattern in a directory
+# @what  pattern
+# @where path
+ff(){
+  what=$1
+  if [ $2 ]; then
+    where=$2
+  else
+    where=""
+  fi
+  # redirect the stderr to stdout, grep both to exclude 'permission denied'
+  # assumes we don't want to find a file that's called "permission denied".
+  find $where -iname "$what" 2>&1 | grep -v 'Permission denied'
+}
+
+# --- xclip
+
+# Copy stdin in the clipboard
+xclip() {
+  echo "$@" | xclip -selection c
+}
+
+# Copy current directory path in the clipboard
+cppwd(){
+  echo "cd $(pwd)" | xclip
+}
+
+# Copy last command in the clipboard
+cplastcmd(){
+  echo -n $(fc -nl -1) | tr -d '\n' | xclip
+}
+
+# Copy last command ouput in the clipboard
+cplastcmdout(){
+  cmd=$(fc -nl -1 | tr -d '\n')
+  $cmd | xclip -sel clipboard
+}
+
 ##########################
 
 # Source optional ~/.myzshrc

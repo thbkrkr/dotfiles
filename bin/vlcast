@@ -1,0 +1,16 @@
+#!/bin/bash -eu
+
+HEIGHT=1600
+WIDTH=900
+FPS=24
+OUT=something.mp4
+VLC=cvlc
+ 
+echo "Screen recording started..."
+$VLC --quiet screen:// -I dummy \
+	:screen-follow-mouse \
+	:screen-mouse-image="~/miam/images/cursor.png" \
+   	--screen-left=0 --screen-top=0 --screen-width=$HEIGHT --screen-height=$WIDTH \
+   	--screen-fps=$FPS \
+   	--sout-transcode-fps=$FPS \
+   	--sout="#transcode{vcodec=h264,vb=1200,acodec=none,ab=128,channels=2}:duplicate{dst=std{access=file,mux=mp4,dst="$OUT"}}" > /dev/null

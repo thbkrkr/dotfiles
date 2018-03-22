@@ -33,6 +33,7 @@ alias m='make'
 alias s='ssh'
 alias sb='sensible-browser'
 alias tf='terraform'
+alias k='kubectl'
 
 # Git aliases
 alias gst='git status'

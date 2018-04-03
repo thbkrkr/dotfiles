@@ -34,6 +34,7 @@ alias s='ssh'
 alias sb='sensible-browser'
 alias tf='terraform'
 alias k='kubectl'
+alias os=openstack
 
 # Git aliases
 alias gst='git status'

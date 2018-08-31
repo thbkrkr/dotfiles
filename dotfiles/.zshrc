@@ -17,6 +17,9 @@ source $ZSH/oh-my-zsh.sh
 export HISTSIZE=10000000
 export PATH=~/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+# Show completion menu when number of options is at least 2
+zstyle ':completion:*' menu select=2
+
 ##########################
 
 # Tiny aliases
@@ -36,7 +39,7 @@ alias tf='terraform'
 alias k='kubectl'
 alias os=openstack
 
-# Git aliases
+# Git aliases/func
 alias gst='git status'
 alias gpr='git pull --rebase'
 alias grrh='git reset --hard HEAD'
@@ -46,15 +49,12 @@ alias gcamne='git commit --amend --no-edit'
 alias grpo='git remote prune origin'
 alias gspp='git stash && git pull --rebase && git stash pop'
 alias glg='git lg --stat -C -4'
-
 gri() { git rebase -i HEAD~$1; }
 
-# Docker aliases
+# Docker aliases/func
 dps()  { docker ps -a --format 'table{{.Names}}\t{{.Status}}'; }
 dpsa() { docker ps -a --format 'table{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}'; }
-
 dim()  { docker images | grep $@; }
-
 alias xd='xargs -r docker'
 drmc() { docker ps -qa --filter 'status=dead' --filter 'status=exited' | xd rm; }
 drmcg() { docker ps -a | grep "${@:-a}" | awk '{print $1}' | xargs -n1 docker rm -f; }
@@ -67,14 +67,11 @@ dprune() { docker system prune -f }
 drmall() { drmc; drmi; drmv; drmn; }
 dkillall()  { docker ps -aq | xd rm -f; }
 dstopall()  { docker ps -aq | xargs -r docker stop; }
-
 dip()  { docker inspect --format '{{ .NetworkSettings }}' "$@"; }
 dpid() { docker inspect --format '{{ .State.Pid }}' "$@"; }
-
 dsh()  { docker exec -ti $@ sh }
 dbash() { docker exec -ti $@ bash }
 dzsh() { docker exec -ti $@ zsh }
-
 dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
 
 # Docker machine aliases
@@ -98,8 +95,8 @@ alias wholisten='sudo netstat -antulp | grep LISTE'
 
 # @help randpwd $length
 randpwd() {
-  local length=${1:-42}
-  cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $length | head -1
+  local length=${1:-20}
+  cat /dev/urandom | tr -dc 'a-zA-Z0-9&@#!%?;:-[]{}' | fold -w $length | head -1
 }
 
 # @help always $sleepDuration $cmd
@@ -126,7 +123,7 @@ geoip() { curl -s freegeoip.net/json/$(curl -s ipaddr.ovh) | jq .; }
 
 # Display only the IP
 myip() {
-  curl -s ipaddr.ovh | sed "s/213.[0-9\.]*.64/vpn/"
+  curl -s ipaddr.ovh
 }
 
 # Update a specific apt repo

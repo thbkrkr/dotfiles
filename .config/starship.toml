@@ -24,7 +24,7 @@ style = "bold green"
 
 [character]
 success_symbol = "❯"
-error_symbol = "❯"
+error_symbol = [❯](red)
 
 [kubernetes]
 disabled = false

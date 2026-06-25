@@ -5,6 +5,10 @@ truncate_to_repo = true
 [git_branch]
 symbol = ""
 
+[git_state]
+format = '[\($state( $progress_current/$progress_total)\)]($style) '
+style = "bold yellow"
+
 [git_status]
 style = "yellow"
 conflicted = "!"

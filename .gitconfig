@@ -1,6 +1,6 @@
-[user]
-	name = Thibault Richard
-	email = thb.krkr@gmail.com
+# identity lives in an untracked file (not committed)
+[include]
+	path = ~/.gitconfig.local
 [core]
 	editor = vim
 	autocrlf = input
@@ -46,9 +46,3 @@
 	autosquash = true
 [push]
 	default = simple
-[credential "https://github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential

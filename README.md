@@ -7,7 +7,7 @@ Tracked via a bare git repo (`~/.dotfiles`), work-tree is `$HOME`.
 ```sh
 git clone --bare https://github.com/thbkrkr/dotfiles.git ~/.dotfiles
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-dotfiles checkout home
+dotfiles checkout main
 dotfiles config --local status.showUntrackedFiles no
 ```
 

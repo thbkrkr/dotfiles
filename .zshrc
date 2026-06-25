@@ -23,7 +23,14 @@ eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 source <(fzf --zsh)
 
+export HISTFILE=~/.zsh_history
 export HISTSIZE=10000000
+export SAVEHIST=$HISTSIZE
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
 
 export PATH=$PATH:~/bin:~/go/bin:~/.local/bin
 export GH_TOKEN=$(cat ~/.gh_token)
@@ -61,6 +68,8 @@ alias m='make'
 alias s='ssh'
 alias tf='terraform'
 alias k='kubectl'
+compdef k=kubectl
+compdef g=git
 
 export LS_COLORS="ex=01;32:${LS_COLORS}"
 alias ls='ls --color=auto'

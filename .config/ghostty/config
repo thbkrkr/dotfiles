@@ -9,3 +9,5 @@ scrollbar = never
 
 window-padding-x = 8
 window-padding-balance = true
+
+shell-integration = zsh

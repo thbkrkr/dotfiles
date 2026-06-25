@@ -31,18 +31,17 @@
   rh = reset --hard HEAD
   cdf = clean -df
   cb = checkout -b
-  br = branch
   cp = cherry-pick
   tree = log --graph --oneline --all --decorate
   ri = rebase -i
-  rim = rebase -i master
+  rim = rebase -i main
   re = rebase
-  ru = rebase upstream/master
+  fo = fetch origin
+  rom = rebase origin/main
+  ru = rebase upstream/main
   fu = fetch upstream
 [branch]
 	autosetuprebase = always
 [rebase]
 	autostash = true
 	autosquash = true
-[push]
-	default = simple

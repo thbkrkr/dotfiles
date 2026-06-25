@@ -3,6 +3,5 @@ target
 .target
 .env
 node_modules
-bower_components
 .DS_Store
 .gitconfig.local

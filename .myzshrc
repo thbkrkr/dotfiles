@@ -19,21 +19,16 @@ zstyle ':completion:*' menu select
 setopt AUTO_CD
 
 source <(kubectl completion zsh)
-
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
-
 source <(fzf --zsh)
 
-DISABLE_AUTO_UPDATE="true"
-DISABLE_UPDATE_PROMPT="true"
-COMPLETION_WAITING_DOTS="true"
 export HISTSIZE=10000000
 
-export PATH=$PATH:~/bin:~/go/bin:~/.local/bin:~/.local/bin
-export GH_TOKEN=$(gh auth token)
+export PATH=$PATH:~/bin:~/go/bin:~/.local/bin
+export GH_TOKEN=$(cat ~/.gh_token)
 
-HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_ENV_HINTS=1
 
 fortune | cowsay | lolcat
 
@@ -97,9 +92,6 @@ dbash() { docker exec -ti $@ bash }
 dzsh() { docker exec -ti $@ zsh }
 dstats() { docker stats $(docker ps | grep -v CON | sed "s/.*\s\([a-z].*\)/\1/" | awk '{printf $1" "}'); }
 
-# Docker machine aliases
-dme()  { eval $(docker-machine env --shell zsh $1); }
-
 # Apt
 alias get='sudo apt-get install -y'
 alias search='sudo apt-cache search'
@@ -137,12 +129,6 @@ kurl() {
   curl -sSL --connect-timeout 3 $@ -o /dev/null \
     -w '{"url":"%{url_effective}","status":"%{http_code}","time":"%{time_total}"}\n'
 }
-
-# Update dotfiles
-updot() { cd ~/.dotfiles; git pull --rebase; ./install.sh; }
-
-# Display the IP and geo information of the current machine
-geoip() { curl -s freegeoip.net/json/$(curl -s ipaddr.ovh) | jq .; }
 
 # Display only the IP
 myip() {
@@ -248,5 +234,3 @@ cplastcmdout(){
   cmd=$(fc -nl -1 | tr -d '\n')
   $cmd | xclip -sel clipboard
 }
-# dotfiles bare repo — track selected files in $HOME directly
-alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'

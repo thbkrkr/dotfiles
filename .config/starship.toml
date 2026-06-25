@@ -1,0 +1,48 @@
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+symbol = ""
+
+[git_status]
+style = "yellow"
+conflicted = "!"
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇕"
+untracked = "?"
+modified = "*"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+
+[cmd_duration]
+min_time = 100
+format = "[$duration]($style) "
+style = "bold green"
+
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+
+[kubernetes]
+disabled = false
+
+[nodejs]
+disabled = true
+
+[golang]
+disabled = true
+
+[rust]
+disabled = true
+
+[python]
+disabled = true
+
+[java]
+disabled = true
+
+[package]
+disabled = true

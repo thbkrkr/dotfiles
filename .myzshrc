@@ -30,7 +30,7 @@ DISABLE_UPDATE_PROMPT="true"
 COMPLETION_WAITING_DOTS="true"
 export HISTSIZE=10000000
 
-export PATH=~/bin:~/go/bin:~/.local/bin:$PATH
+export PATH=$PATH:~/bin:~/go/bin:~/.local/bin:~/.local/bin
 export GH_TOKEN=$(gh auth token)
 
 HOMEBREW_NO_ENV_HINTS=1
@@ -39,6 +39,7 @@ fortune | cowsay | lolcat
 
 ##########################
 
+alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dv='devctl'
 source <(devctl completion zsh)
 

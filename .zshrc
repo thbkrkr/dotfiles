@@ -34,7 +34,16 @@ fortune | cowsay | lolcat
 
 ##########################
 
-alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+# In $HOME, point `git` (and all g* shortcuts) at the dotfiles bare repo
+chpwd() {
+  if [[ "$PWD" == "$HOME" ]]; then
+    alias git='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+  else
+    unalias git 2>/dev/null || true
+  fi
+}
+chpwd  # run once at shell start
+
 alias dv='devctl'
 source <(devctl completion zsh)
 

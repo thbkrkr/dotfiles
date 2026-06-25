@@ -1,0 +1,11 @@
+copy-on-select = clipboard
+
+font-size = 18
+theme = dracula-default
+
+cursor-style = block
+cursor-style-blink = true
+scrollbar = never
+
+window-padding-x = 8
+window-padding-balance = true

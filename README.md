@@ -17,3 +17,15 @@ echo '[user]
     name = Your Name
     email = your@email.com' > ~/.gitconfig.local
 ```
+
+### Syncing changes
+
+The `git` alias is active in `~` (set by the `chpwd` hook in `.zshrc`), pointing at the bare repo.
+
+**Edit files directly in `$HOME` and push to GitHub:**
+```sh
+cd ~
+git add .zshrc
+git commit -m "update zsh config"
+git push origin main
+```
